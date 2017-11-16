@@ -1,0 +1,21 @@
+.App {
+  text-align: center;
+}
+
+.header{
+  background-color:gray;
+  display:grid; 
+  grid-template-columns: 1fr 5fr 1fr;
+  
+  
+}
+.headerUser{
+  border-left: black 3px solid;
+  text-align: center;
+}
+.headerTitle{
+  text-align: center;
+  font-size: 26px;
+  font-family: Verdana;
+}
+
