@@ -41,10 +41,12 @@ class Poll extends Component {
   render(){
     return(
       <div className="pollContainer">
-      <h3 className="pollTitle"> Buy Google </h3>
-      <p className="pollText"> I think that we should buy a bunch of shares of Google because of X Y and Z. What do you think? Do you agree or disagree?</p>
-      <button type="button" className="agree">Agree</button>
-      <button type="button" className="disagree">Disagree</button>
+        <h3 className="pollTitle"> {this.props.title} </h3>
+        <p className="pollText"> 
+        {this.props.body}
+        </p>
+        <button type="button" className="agree">Agree</button>
+        <button type="button" className="disagree">Disagree</button>
       </div>
       )
   }
@@ -59,7 +61,11 @@ class App extends Component {
       <div className="App">
         <Header userName="Drew" />
         <PollButton/>
-        <Poll/>
+        <div className="PollList">
+          <Poll title="Buy Google" body="I think that we should buy a bunch of shares of Google because of X Y and Z. What do you think? Do you agree or disagree?"/>
+          <Poll title="Sell Apple" body="I think that we should sell a bunch of shares of Apple because of X Y and Z. What do you think? Do you agree or disagree?"/>
+          <Poll title="Buy AMD" body="I think that we should buy a bunch of shares of AMD because of X Y and Z. What do you think? Do you agree or disagree?"/>
+        </div>      
       </div>
     );
   }

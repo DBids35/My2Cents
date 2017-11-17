@@ -31,12 +31,18 @@
     background-color: #4CAF50; /* Green */
     color: white;
 }
+.pollList{
+	display: grid;
+	grid-template-columns:1fr 1fr;
+}
+
 .pollContainer{
 	width: 25%;
 	border: black 3px solid;
 	border-radius: 6px;
 	background-color: #ddd;
 	margin:5em;
+
 }
 .pollTitle{
 	padding:10px;
