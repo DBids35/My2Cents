@@ -6,7 +6,7 @@ class UserDisplay extends Component{
   render(){
     return(
       <div className="headerUser">
-        <h3> Drew </h3>
+        <h3> {this.props.name} </h3>
         <p> 10 </p>
       </div>
       )
@@ -22,7 +22,7 @@ class Header extends Component {
           <div className="headerTitle">
             <h1> My2Cents </h1>
           </div>
-          <UserDisplay/>
+          <UserDisplay name={this.props.userName}/>
         </div>
       )
   }
@@ -57,7 +57,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Header/>
+        <Header userName="Drew" />
         <PollButton/>
         <Poll/>
       </div>
