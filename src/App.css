@@ -33,11 +33,12 @@
 }
 .pollList{
 	display: grid;
-	grid-template-columns:1fr 1fr;
+	grid-template-columns: 1fr 1fr 1fr;
+	
 }
 
 .pollContainer{
-	width: 25%;
+	
 	border: black 3px solid;
 	border-radius: 6px;
 	background-color: #ddd;
@@ -51,7 +52,7 @@
 }
 .pollText{
 	padding:10px;
-	border-bottom: black 3px solid;
+	
 	margin-bottom: 0px;
 }
 
