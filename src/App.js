@@ -81,7 +81,7 @@ class App extends Component {
     var votes=this.state.votes-10
     this.setState({votes})
     const newItem = {
-      title: "Button Created Poll",
+      title: 'Poll '+ (this.state.polls.length+1),
       text: "This Poll was created by clicking the New Poll Button"
     };
     this.setState(prevState => ({
