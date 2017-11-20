@@ -47,9 +47,11 @@ class Poll extends Component {
   }
   incrementAgree(){
     this.setState({agreeVotes:this.state.agreeVotes+1})
+    this.props.onClick()
   }
   incrementDisagree(){
     this.setState({disagreeVotes:this.state.disagreeVotes+1})
+    this.props.onClick()
   }
   render(){
     return(
@@ -69,7 +71,7 @@ class Poll extends Component {
 class App extends Component {
   constructor(props) {
     super(props)
-    this.state={userName:'Drew', votes:100}
+    this.state={userName:'Drew', votes:100, polls:[]}
 
   }
   componentDidMount() {
@@ -78,6 +80,17 @@ class App extends Component {
   handleNewPollClick(){
     var votes=this.state.votes-10
     this.setState({votes})
+    const newItem = {
+      title: "Button Created Poll",
+      text: "This Poll was created by clicking the New Poll Button"
+    };
+    this.setState(prevState => ({
+      polls: prevState.polls.concat(newItem)
+    }));
+  }
+  handlePollVoteClick(){
+    var votes=this.state.votes-1
+    this.setState({votes})
   }
   render() {
     return (
@@ -85,9 +98,9 @@ class App extends Component {
         <Header userName={this.state.userName} votes={this.state.votes} />
         <PollButton onClick={() => this.handleNewPollClick()}/>
         <div className="pollList">
-          <Poll title="Buy Google" body="I think that we should buy a bunch of shares of Google because of X Y and Z. What do you think? Do you agree or disagree?"/>
-          <Poll title="Sell Apple" body="I think that we should sell a bunch of shares of Apple because of X Y and Z. What do you think? Do you agree or disagree?"/>
-          <Poll title="Buy AMD" body="I think that we should buy a bunch of shares of AMD because of X Y and Z. What do you think? Do you agree or disagree?"/>
+          {this.state.polls.reverse().map(poll => (
+          <Poll title={poll.title} body={poll.text} onClick={() => this.handlePollVoteClick()}/>
+          ))}
         </div>      
       </div>
     );
