@@ -18,6 +18,14 @@
   font-size: 26px;
   font-family: Verdana;
 }
+.pollTemplateContainer{
+	margin-top: 10px;
+	margin-left: 33%;
+	border: black 3px solid;
+	border-radius: 6px;
+	width: 33%;
+	text-align: center;
+}
 .createPollButton{
 	font-size: 26px;
 	color: black;
@@ -44,6 +52,7 @@
 	margin:5em;
 
 }
+
 .pollTitle{
 	padding:10px;
 	border-bottom: black 3px solid;

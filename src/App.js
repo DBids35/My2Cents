@@ -28,12 +28,46 @@ class Header extends Component {
   }
 }
 
-class PollButton extends Component{
+
+class PollTemplate extends Component{
+  constructor(props){
+    super(props)
+    this.state={buyOrSell:"Buy", numShares:10, ticker:'GOOG', explanation:"Why?"}
+    this.handleBuyOrSellChange=this.handleBuyOrSellChange.bind(this)
+    this.handleNumSharesChange=this.handleNumSharesChange.bind(this)
+    this.handleTickerChange=this.handleTickerChange.bind(this)
+    this.handleExplanationChange=this.handleExplanationChange.bind(this)
+  }
+  handleBuyOrSellChange(event){
+    this.setState({buyOrSell:event.target.value})
+    console.log(event.target.value)
+  }
+  handleNumSharesChange(event){
+    this.setState({numShares:event.target.value})
+    console.log(event.target.value)
+  }
+  handleTickerChange(event){
+    this.setState({ticker:event.target.value})
+    console.log(event.target.value)
+  }
+  handleExplanationChange(event){
+    this.setState({explanation:event.target.value})
+    console.log(event.target.value)
+  }
   render(){
-    return (
+    return(
+      <div className="pollTemplateContainer">
+        <h3> Create Proposal </h3>
+        <select onChange={this.handleBuyOrSellChange}>
+          <option value="Buy">Buy</option>
+          <option value="Sell">Sell</option>
+        </select>
+        <input type="text" name="numShares" defaultValue={this.state.numShares} onChange={this.handleNumSharesChange}/>
+        shares of: <input type="text" name="ticker" defaultValue={this.state.ticker} onChange={this.handleTickerChange}/>
+        <textarea id="explanationTextArea" rows="4" defaultValue={this.state.explanation} onChange={this.handleExplanationChange}></textarea>
+        <button type="button" className="createPollButton" onClick={() => this.props.onClick(this.state.buyOrSell, this.state.numShares, this.state.ticker, this.state.explanation)}>Create new Proposal</button>
 
-      <button type="button" className="createPollButton" onClick={this.props.onClick}>Create new Poll</button>
-
+      </div>
       )
   }
 }
@@ -60,8 +94,8 @@ class Poll extends Component {
         <p className="pollText"> 
         {this.props.body}
         </p>
-        <button type="button" className="agree" onClick={this.incrementAgree}>Agree</button>
-        <button type="button" className="disagree" onClick={this.incrementDisagree}>Disagree</button>
+        <button type="button" className="agree" onClick={this.incrementAgree}>+1</button>
+        <button type="button" className="disagree" onClick={this.incrementDisagree}>-1</button>
         <p> {this.state.agreeVotes} agree </p>
         <p> {this.state.disagreeVotes} disagree </p>
       </div>
@@ -72,17 +106,15 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state={userName:'Drew', votes:100, polls:[]}
+    this.handleNewPollClick=this.handleNewPollClick.bind(this)
+  }
 
-  }
-  componentDidMount() {
-    
-  }
-  handleNewPollClick(){
+  handleNewPollClick(buyOrSell, numShares, ticker, explanation){
     var votes=this.state.votes-10
     this.setState({votes})
     const newItem = {
-      title: 'Poll '+ (this.state.polls.length+1),
-      text: "This Poll was created by clicking the New Poll Button"
+      title: buyOrSell+" "+numShares+" shares of "+ticker,
+      text: explanation
     };
     this.setState(prevState => ({
       polls: prevState.polls.concat(newItem)
@@ -96,7 +128,8 @@ class App extends Component {
     return (
       <div className="App">
         <Header userName={this.state.userName} votes={this.state.votes} />
-        <PollButton onClick={() => this.handleNewPollClick()}/>
+        <PollTemplate onClick={this.handleNewPollClick}/>
+        
         <div className="pollList">
           {this.state.polls.reverse().map(poll => (
           <Poll title={poll.title} body={poll.text} onClick={() => this.handlePollVoteClick()}/>
