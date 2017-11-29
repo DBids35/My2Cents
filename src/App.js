@@ -40,19 +40,15 @@ class PollTemplate extends Component{
   }
   handleBuyOrSellChange(event){
     this.setState({buyOrSell:event.target.value})
-    console.log(event.target.value)
   }
   handleNumSharesChange(event){
     this.setState({numShares:event.target.value})
-    console.log(event.target.value)
   }
   handleTickerChange(event){
     this.setState({ticker:event.target.value})
-    console.log(event.target.value)
   }
   handleExplanationChange(event){
     this.setState({explanation:event.target.value})
-    console.log(event.target.value)
   }
   render(){
     return(
@@ -62,9 +58,11 @@ class PollTemplate extends Component{
           <option value="Buy">Buy</option>
           <option value="Sell">Sell</option>
         </select>
-        <input type="text" name="numShares" defaultValue={this.state.numShares} onChange={this.handleNumSharesChange}/>
-        shares of: <input type="text" name="ticker" defaultValue={this.state.ticker} onChange={this.handleTickerChange}/>
-        <textarea id="explanationTextArea" rows="4" defaultValue={this.state.explanation} onChange={this.handleExplanationChange}></textarea>
+        <input type="text" className="numSharesBox" defaultValue={this.state.numShares} onChange={this.handleNumSharesChange}/>
+        shares of: <input type="text" className="tickerBox" defaultValue={this.state.ticker} onChange={this.handleTickerChange}/>
+        <br/>
+        <textarea id="explanationTextArea" rows="6" cols="25" defaultValue={this.state.explanation} onChange={this.handleExplanationChange}></textarea>
+
         <button type="button" className="createPollButton" onClick={() => this.props.onClick(this.state.buyOrSell, this.state.numShares, this.state.ticker, this.state.explanation)}>Create new Proposal</button>
 
       </div>
