@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import {
+  BrowserRouter as Router, Switch, Route
+} from 'react-router-dom';
 import logo from './logo.svg';
 import './App.css';
 
@@ -7,7 +10,6 @@ class UserDisplay extends Component{
     return(
       <div className="headerUser">
         <h3> {this.props.userName} </h3>
-        <p> {this.props.votes} </p>
       </div>
       )
   }
@@ -22,13 +24,30 @@ class Header extends Component {
           <div className="headerTitle">
             <h1> My2Cents </h1>
           </div>
-          <UserDisplay userName={this.props.userName} votes={this.props.votes}/>
+          <UserDisplay userName={this.props.userName}/>
         </div>
       )
   }
 }
 
-
+class CallAPI extends Component{
+  constructor(props){
+    super(props)
+    this.state={apiCall:null}
+    fetch('http://my2cents.pythonanywhere.com/api')
+    .then(result => result.json())
+    .then(result => {
+      console.log(result.msg)
+      const message= result.msg;
+      this.setState({apiCall:message})
+    })
+  }
+  render(){
+    return(
+        <p>{this.state.apiCall}</p>
+      )
+  }
+}
 class PollTemplate extends Component{
   constructor(props){
     super(props)
@@ -69,14 +88,23 @@ class PollTemplate extends Component{
       )
   }
 }
+
 class Poll extends Component {
   constructor(props){
     super(props)
-    this.state={agreeVotes:0, disagreeVotes:0}
+    this.state={agreeVotes:0, disagreeVotes:0, endTime:null}
     this.incrementAgree=this.incrementAgree.bind(this)
     this.incrementDisagree=this.incrementDisagree.bind(this)
-
+    
+    
   }
+  componentDidMount(){
+    const now=new Date()
+    const endTime=now.setDate(now.getDate()+3)
+    this.setState({endTime})
+    
+  }
+  
   incrementAgree(){
     this.setState({agreeVotes:this.state.agreeVotes+1})
     this.props.onClick()
@@ -94,22 +122,54 @@ class Poll extends Component {
         </p>
         <button type="button" className="agree" onClick={this.incrementAgree}>+1</button>
         <button type="button" className="disagree" onClick={this.incrementDisagree}>-1</button>
+        <PollCountdown endTime={this.state.endTime}/>
         <p> {this.state.agreeVotes} agree </p>
         <p> {this.state.disagreeVotes} disagree </p>
       </div>
       )
   }
 }
-class App extends Component {
+class PollCountdown extends Component{
+  constructor(props){
+    super(props)
+    this.state={days:3, hours:0, minutes:0, seconds:0} 
+    this.tick=this.tick.bind(this)
+  }
+  componentDidMount(){
+    this.timerID = setInterval(()=> this.tick(), 1000);
+  }
+  tick(){
+    var now= new Date()
+    var then=this.props.endTime
+    var diff=(then-now)
+    var seconds=Math.floor(diff/1000)
+    var minutes=Math.floor(seconds/60)
+    seconds=seconds-(minutes*60)
+    var hours=Math.floor(minutes/60)
+    minutes=minutes-(hours*60)
+    var days=Math.floor(hours/24)
+    hours=hours-(days*24)
+    
+    this.setState({days})
+    this.setState({hours})
+    this.setState({minutes})
+    this.setState({seconds})
+  }
+  render(){
+    return(
+      <h2>{this.state.days.toString()}:{this.state.hours.toString()}:{this.state.minutes.toString()}:{this.state.seconds.toString()} </h2>
+
+      )
+  }
+}
+class Home extends Component {
   constructor(props) {
     super(props)
-    this.state={userName:'Drew', votes:100, polls:[]}
+    this.state={user:{name:'Drew', ownershipPercentage:50, accuracy: 1}, polls:[]}
     this.handleNewPollClick=this.handleNewPollClick.bind(this)
   }
 
   handleNewPollClick(buyOrSell, numShares, ticker, explanation){
-    var votes=this.state.votes-10
-    this.setState({votes})
     const newItem = {
       title: buyOrSell+" "+numShares+" shares of "+ticker,
       text: explanation
@@ -119,13 +179,13 @@ class App extends Component {
     }));
   }
   handlePollVoteClick(){
-    var votes=this.state.votes-1
-    this.setState({votes})
+    console.log("voted")
   }
   render() {
     return (
       <div className="App">
-        <Header userName={this.state.userName} votes={this.state.votes} />
+        <Header userName={this.state.user.name}/>
+        <CallAPI/>
         <PollTemplate onClick={this.handleNewPollClick}/>
         
         <div className="pollList">
@@ -137,6 +197,29 @@ class App extends Component {
     );
   }
 }
-
+class Login extends Component{
+  render(){
+    return(
+      <div>
+        <h2>Username</h2>
+        <h2>Password</h2>
+      </div>
+      )
+  }
+}
+class App extends Component{
+  render(){
+    return(
+      <Router>
+        <Switch>
+          
+          <Route exact path='/' component={Home} />
+          <Route path='/login' component={Login} />
+          
+        </Switch>
+      </Router>
+      )
+  }
+}
 
 export default App;
