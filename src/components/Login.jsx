@@ -37,6 +37,7 @@ export default class Login extends Component {
       this.setState({valid:result.msg})
       if (this.state.valid) {
         this.setState({message:"Logging In..."})
+        this.props.onLogin()
       }
       else {
         this.setState({message:"Incorrect username or password, please try again"})
@@ -45,7 +46,7 @@ export default class Login extends Component {
   }
 
   render(){
-    if (this.state.valid) {
+    if (this.props.loggedIn) {
       return <Redirect to='/home'/>
     } else {
       return (
