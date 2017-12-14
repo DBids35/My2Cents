@@ -1,13 +1,10 @@
 .App {
   text-align: center;
 }
-
 .header{
   background-color:gray;
-  display:grid; 
+  display:grid;
   grid-template-columns: 1fr 5fr 1fr;
-  
-  
 }
 .headerUser{
   border-left: black 3px solid;
@@ -49,7 +46,7 @@
 .pollList{
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
-	
+
 }
 
 .pollContainer{
@@ -67,7 +64,7 @@
 }
 .pollText{
 	padding:10px;
-	
+
 	margin-bottom: 0px;
 }
 
