@@ -9,7 +9,7 @@ export default class PrivateRoute extends Component{
   static displayName = "PrivateRoute";
   render(){
    if (this.props.loggedIn){
-    return <Route path={this.props.path} component={this.props.component} />
+    return <Route path={this.props.path} render={this.props.component} />
    }
    else{
     return <Redirect to='/'/>

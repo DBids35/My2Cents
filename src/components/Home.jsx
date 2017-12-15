@@ -22,12 +22,12 @@ export default class Home extends Component {
   };
 
   componentDidMount() {
-    this.getNextPoll();
+    this.getPolls();
     this.getApiStatus();
   }
 
-  getNextPoll = () => {
-    fetch('http://my2cents.pythonanywhere.com/nextPollKey')
+  getPolls = () => {
+    fetch('http://my2cents.pythonanywhere.com/createPoll')
       .then(result => result.json())
       .then(result => {
         console.log(result.polls)
@@ -50,11 +50,11 @@ export default class Home extends Component {
   handleNewPollClick = (buyOrSell, ticker, explanation) => {
     const now = new Date();
     const endTime = now.setDate(now.getDate() + 3);
-    const title = `${buyOrSell} ${ticker}`;
-    fetch('http://my2cents.pythonanywhere.com/nextPollKey', {
+    
+    fetch('http://my2cents.pythonanywhere.com/createPoll', {
         method: 'POST',
         headers: {Accept: 'application/json','Content-Type': 'application/json'},
-        body: JSON.stringify({title: title, explanation: explanation, endTime:endTime })
+        body: JSON.stringify({action: buyOrSell, asset:ticker, explanation: explanation, endTime:endTime })
       }
     )
     .then(result => result.json())
@@ -79,7 +79,7 @@ export default class Home extends Component {
         <div className="pollList">
           {this.state.polls.reverse().map(poll => (
             <Poll
-              title={poll.title}
+              title = {`${poll.action} ${poll.asset}`}
               body={poll.text}
               endTime={poll.endTime}
               onClick={this.handlePollVoteClick}

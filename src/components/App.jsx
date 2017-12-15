@@ -8,10 +8,15 @@ import Home from './Home';
 import PrivateRoute from './PrivateRoute'
 
 class App extends Component{
- 
-  state={loggedIn:false}
+  constructor(props){
+    super(props)
+    this.state={user:null, loggedIn:false}
+    this.handleLogin = this.handleLogin.bind(this)
+  }
   
-  handleLogin= () => {
+  
+  handleLogin(user) {
+    this.setState({user})
     this.setState({loggedIn:true})
   }
   render(){
@@ -19,7 +24,7 @@ class App extends Component{
       <Router>
         <Switch>
           <Route exact path='/' render={() => <Login onLogin={this.handleLogin} loggedIn={this.state.loggedIn}/>} />
-          <PrivateRoute loggedIn={this.state.loggedIn} path='/home' component={Home} />
+          <PrivateRoute loggedIn={this.state.loggedIn} path='/home' component={()=> <Home user={this.state.user}/>} />
         </Switch>
       </Router>
       )

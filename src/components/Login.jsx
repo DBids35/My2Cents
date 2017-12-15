@@ -37,7 +37,7 @@ export default class Login extends Component {
       this.setState({valid:result.msg})
       if (this.state.valid) {
         this.setState({message:"Logging In..."})
-        this.props.onLogin()
+        this.props.onLogin(username)
       }
       else {
         this.setState({message:"Incorrect username or password, please try again"})

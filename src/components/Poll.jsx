@@ -41,6 +41,7 @@ export default class Poll extends Component {
 
   render(){
     return(
+      
       <div className="pollContainer">
         <h3 className="pollTitle"> {this.props.title} </h3>
         <p className="pollText">
