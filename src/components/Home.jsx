@@ -12,11 +12,6 @@ export default class Home extends Component {
   static displayName = "Home";
 
   state = {
-    user: {
-      name:'Drew',
-      ownershipPercentage: 50,
-      accuracy: 1
-    },
     polls:[],
     apiCall: null,
   };
@@ -64,21 +59,21 @@ export default class Home extends Component {
     })
   }
 
-  handlePollVoteClick = () => {
-    console.log("voted");
-  }
+  
 
   render() {
     return (
       <div className="App">
-        <Header userName={this.state.user.name}/>
+        <Header userName={this.props.user}/>
         <p>{this.state.apiCall}</p>
         <PollTemplate
           onClick={this.handleNewPollClick}
         />
         <div className="pollList">
-          {this.state.polls.reverse().map(poll => (
+          {this.state.polls.map(poll => (
             <Poll
+              user={this.props.user}
+              id={poll.id}
               title = {`${poll.action} ${poll.asset}`}
               body={poll.text}
               endTime={poll.endTime}

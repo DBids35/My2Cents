@@ -4,40 +4,85 @@ import PollCountdown from './PollCountdown';
 
 export default class Poll extends Component {
   state = {
-    agreeVotes:0,
-    disagreeVotes:0,
-    userVoteStatus:0
+    userVoteStatus:"none",
+    id:this.props.id,
+    voteMessage:"You haven't voted yet!"
   };
 
-  componentDidMount(){}
+  componentWillMount(){
+    this.getPollInfo()
 
-  incrementAgree=()=>{
-    if (this.state.userVoteStatus==0){
-      this.setState(prevState => ({agreeVotes: prevState.agreeVotes + 1,}))
-      this.setState({userVoteStatus:1})
-    }
-    else if (this.state.userVoteStatus==-1){
-      this.setState(prevState => ({agreeVotes: prevState.agreeVotes + 1,}))
-      this.setState(prevState => ({disagreeVotes: prevState.disagreeVotes - 1,}))
-      this.setState({userVoteStatus:1})
-    }
     
-    this.props.onClick();
+  }
+  componentDidMount(){
+    
+  }
+  getPollInfo(){
+    fetch('http://my2cents.pythonanywhere.com/getUserVoteStatus', {
+        method: 'POST',
+        headers: {Accept: 'application/json','Content-Type': 'application/json'},
+        body: JSON.stringify({user: this.props.user, pollID:this.state.id})
+      }
+    )
+    .then(result => result.json())
+    .then(result => {
+      this.setState({userVoteStatus:result.vote});
+      this.updateVoteMessage(result.vote)
+      this.setState({numberVoted:result.numberVoted});
+      this.setState({numberUsers:result.numberUsers});
+      console.log("finished")
+    })
+  }
+  handlePollVoteClick = (pollID, vote, timestamp) => {
+    fetch('http://my2cents.pythonanywhere.com/addVote', {
+        method: 'POST',
+        headers: {Accept: 'application/json','Content-Type': 'application/json'},
+        body: JSON.stringify({pollID:pollID, user:this.props.user, vote:vote, timestamp:timestamp })
+      }
+    )
+    .then(result => result.json())
+    .then(result => {
+      console.log(result.msg);
+      this.getPollInfo()
+      
+    })
+  }
+  updateVoteMessage(vote){
+    if(vote==1){
+        this.setState({voteMessage: "You voted Yes"})
+      }
+      else if(vote==-1){
+        this.setState({voteMessage: "You voted No"})
+      }
+      else if(vote==0){
+        this.setState({voteMessage: "You voted Not Sure"})
+      }
+  }
+  
+  incrementAgree=()=>{
+    this.setState({userVoteStatus:1})
+    this.updateVoteMessage(1)
+    this.handlePollVoteClick(this.state.id, 1, Date.now())
+    
   }
 
   incrementDisagree=()=>{
-    if (this.state.userVoteStatus==0){
-      this.setState(prevState => ({disagreeVotes: prevState.disagreeVotes + 1,}))
-      this.setState({userVoteStatus:-1})
-    }
-    else if (this.state.userVoteStatus==1){
-      this.setState(prevState => ({disagreeVotes: prevState.disagreeVotes + 1,}))
-      this.setState(prevState => ({agreeVotes: prevState.agreeVotes - 1,}))
-      this.setState({userVoteStatus:-1})
-    }
+    this.setState({userVoteStatus:-1})
+    this.updateVoteMessage(-1)
+    this.handlePollVoteClick(this.state.id, -1, Date.now())
     
-    this.props.onClick();
+    
   }
+
+  incrementNotSure=()=>{
+    this.setState({userVoteStatus:0})
+    this.updateVoteMessage(0)
+    this.handlePollVoteClick(this.state.id, 0, Date.now())
+    
+    
+    
+  }
+  
 
   render(){
     return(
@@ -47,11 +92,15 @@ export default class Poll extends Component {
         <p className="pollText">
         {this.props.body}
         </p>
-        <button type="button" className="agree" onClick={this.incrementAgree}>+1</button>
-        <button type="button" className="disagree" onClick={this.incrementDisagree}>-1</button>
+        <div className="buttonContainer">
+          <button type="button" className="agree" onClick={this.incrementAgree}>Yes</button>
+          <button type="button" className="notSure" onClick={this.incrementNotSure}>Not Sure</button>
+          <button type="button" className="disagree" onClick={this.incrementDisagree}>No</button>
+        </div>
+        <h3>{this.state.voteMessage} </h3>
+        <h3>{this.state.numberVoted} out of {this.state.numberUsers} have voted on this poll </h3>
         <PollCountdown endTime={this.props.endTime}/>
-        <p> {this.state.agreeVotes} agree </p>
-        <p> {this.state.disagreeVotes} disagree </p>
+        
       </div>
       )
   }

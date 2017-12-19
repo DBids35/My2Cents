@@ -64,10 +64,13 @@
 }
 .pollText{
 	padding:10px;
-
 	margin-bottom: 0px;
 }
 
+.buttonContainer{
+	display: grid;
+	grid-template-columns:1fr 1fr 1fr;
+}
 .agree{
 	font-size: 26px;
 	color: black;
@@ -75,12 +78,25 @@
 	padding-top: 0px;
 	padding-bottom: 10px;
 	border-radius: 6px;
-	width: 50%;
 	height: 150px;
 	margin-top: 0px;
 
 }
 .agree:hover {
+    color: white;
+}
+.notSure{
+	font-size: 26px;
+	color: black;
+	background-color: gray;
+	padding-top: 0px;
+	padding-bottom: 10px;
+	border-radius: 6px;
+	height: 150px;
+	margin-top: 0px;
+
+}
+.notSure:hover {
     color: white;
 }
 .disagree{
@@ -90,7 +106,6 @@
 	padding-top: 0px;
 	padding-bottom: 10px;
 	border-radius: 6px;
-	width: 50%;
 	height: 150px;
 	margin-top: 0px;
 }
