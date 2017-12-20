@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
-import ActivePoll from './ActivePoll';
+
+import CompletedPoll from './CompletedPoll';
 import PollTemplate from './PollTemplate';
 import Header from './Header';
 
-export default class Home extends Component {
+export default class Results extends Component {
   static propTypes = {};
 
   static defaultProps = {};
@@ -22,7 +22,7 @@ export default class Home extends Component {
   }
 
   getPolls = () => {
-    fetch('http://my2cents.pythonanywhere.com/createPoll')
+    fetch('http://my2cents.pythonanywhere.com/pollComplete')
       .then(result => result.json())
       .then(result => {
         console.log(result.polls)
@@ -58,9 +58,6 @@ export default class Home extends Component {
       this.setState({polls:result.polls});
     })
   }
-  goToCreate = () => {
-    window.location= '/create'
-  }
 
   
 
@@ -68,10 +65,10 @@ export default class Home extends Component {
     return (
       <div className="App">
         <Header userName={this.props.user}/>
-        <button type="button" className="createPollButton" onClick={this.goToCreate}>Create new Proposal</button>
+        
         <div className="pollList">
           {this.state.polls.map(poll => (
-            <ActivePoll
+            <CompletedPoll
               user={this.props.user}
               id={poll.id}
               title = {`${poll.action} ${poll.asset}`}

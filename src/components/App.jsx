@@ -6,7 +6,8 @@ import '../styles/app.css';
 import Login from './Login';
 import Home from './Home';
 import PrivateRoute from './PrivateRoute'
-
+import Results from './Results'
+import Create from './Create'
 class App extends Component{
   constructor(props){
     super(props)
@@ -25,6 +26,8 @@ class App extends Component{
         <Switch>
           <Route exact path='/' render={() => <Login onLogin={this.handleLogin} loggedIn={this.state.loggedIn}/>} />
           <PrivateRoute loggedIn={this.state.loggedIn} path='/home' component={()=> <Home user={this.state.user}/>} />
+          <Route path='/results' render={()=> <Results user={this.state.user}/>} />
+          <Route path='/create' render={()=> <Create user={this.state.user}/>} />
         </Switch>
       </Router>
       )
