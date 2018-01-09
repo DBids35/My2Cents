@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import ActivePoll from './ActivePoll';
 import PollTemplate from './PollTemplate';
 import Header from './Header';
@@ -45,6 +44,9 @@ export default class Home extends Component {
   goToCreate = () => {
     window.location= '/create'
   }
+  goToResults = () => {
+    window.location= '/results'
+  }
 
   
 
@@ -53,6 +55,7 @@ export default class Home extends Component {
       <div className="App">
         <Header userName={this.props.user}/>
         <button type="button" className="createPollButton" onClick={this.goToCreate}>Create new Proposal</button>
+        <button type="button" className="createPollButton" onClick={this.goToResults}>See Results</button>
         <div className="pollList">
           {this.state.polls.map(poll => (
             <ActivePoll

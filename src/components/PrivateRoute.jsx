@@ -7,8 +7,9 @@ export default class PrivateRoute extends Component{
   static defaultProps = {};
 
   static displayName = "PrivateRoute";
+  
   render(){
-   if (this.props.loggedIn){
+   if (sessionStorage.getItem('loggedIn')){
     return <Route path={this.props.path} render={this.props.component} />
    }
    else{

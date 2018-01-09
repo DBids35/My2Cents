@@ -12,14 +12,14 @@ export default class Create extends Component {
   static displayName = "Create";
 
 
-  handleNewPollClick = (buyOrSell, ticker, explanation) => {
+  handleNewPollClick = ( buyOrSell, ticker, explanation) => {
     const now = new Date();
     const endTime = now.setDate(now.getDate() + .001);
     
     fetch('http://my2cents.pythonanywhere.com/getStockPrice/'+ticker, {
         method: 'POST',
         headers: {Accept: 'application/json','Content-Type': 'application/json'},
-        body: JSON.stringify({action: buyOrSell, asset:ticker, explanation: explanation, endTime:endTime })
+        body: JSON.stringify({creator:this.props.user })
       }
     )
     .then(result => result.json())
@@ -28,7 +28,7 @@ export default class Create extends Component {
         fetch('http://my2cents.pythonanywhere.com/createPoll', {
         method: 'POST',
         headers: {Accept: 'application/json','Content-Type': 'application/json'},
-        body: JSON.stringify({action: buyOrSell, asset:ticker, explanation: explanation, endTime:endTime })
+        body: JSON.stringify({action: buyOrSell, asset:ticker, explanation: explanation, endTime:endTime, creator:this.props.user})
         }
         )
         .then(result => result.json())
@@ -37,6 +37,9 @@ export default class Create extends Component {
           this.setState({polls:result.polls});
           window.location= '/home'
         })
+      }
+      else if(result.msg=='too many'){
+        alert("You already have a live proposal, wait until it finishes to create another")
       }
       else{
         alert("Invalid ticker")

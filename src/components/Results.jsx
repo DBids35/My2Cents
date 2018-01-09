@@ -59,13 +59,16 @@ export default class Results extends Component {
     })
   }
 
+  goToHome = () => {
+    window.location= '/home'
+  }
   
 
   render() {
     return (
       <div className="App">
         <Header userName={this.props.user}/>
-        
+        <button type="button" className="createPollButton" onClick={this.goToHome}>Go Home</button>
         <div className="pollList">
           {this.state.polls.map(poll => (
             <CompletedPoll

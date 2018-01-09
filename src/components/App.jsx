@@ -17,17 +17,23 @@ class App extends Component{
   
   
   handleLogin(user) {
+    // setter
+    sessionStorage.setItem('loggedIn', true);
+    sessionStorage.setItem('user', user)
     this.setState({user})
     this.setState({loggedIn:true})
+    
+
+
   }
   render(){
     return(
       <Router>
         <Switch>
           <Route exact path='/' render={() => <Login onLogin={this.handleLogin} loggedIn={this.state.loggedIn}/>} />
-          <PrivateRoute loggedIn={this.state.loggedIn} path='/home' component={()=> <Home user={this.state.user}/>} />
-          <Route path='/results' render={()=> <Results user={this.state.user}/>} />
-          <PrivateRoute loggedIn={this.state.loggedIn} path='/create' component={()=> <Create user={this.state.user}/>} />
+          <PrivateRoute path='/home' component={()=> <Home user={sessionStorage.getItem('user')}/>} />
+          <PrivateRoute path='/results' component={()=> <Results user={sessionStorage.getItem('user')}/>} />
+          <PrivateRoute path='/create' component={()=> <Create user={sessionStorage.getItem('user')}/>} />
         </Switch>
       </Router>
       )
