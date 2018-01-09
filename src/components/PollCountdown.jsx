@@ -17,6 +17,9 @@ export default class PollCountdown extends Component {
   componentDidMount(){
     this.timerID = setInterval(()=> this.tick(), 1000);
   }
+  componentWillUnmount(){
+    clearInterval(this.timerID)
+  }
 
   tick = () => {
     var now=new Date();
@@ -26,17 +29,15 @@ export default class PollCountdown extends Component {
       fetch('http://my2cents.pythonanywhere.com/pollComplete', {
         method: 'POST',
         headers: {Accept: 'application/json','Content-Type': 'application/json'},
-        body: JSON.stringify({pollID:this.props.id})
+        body: JSON.stringify({id:this.props.id})
       }
     )
     .then(result => result.json())
     .then(result => {
-      this.setState({userVoteStatus:result.vote});
-      this.updateVoteMessage(result.vote)
-      this.setState({numberVoted:result.numberVoted});
-      this.setState({numberUsers:result.numberUsers});
+      
       console.log("finished")
     })
+      this.props.updatePolls()
     }
     var seconds=Math.floor(diff/1000);
     var minutes=Math.floor(seconds/60);

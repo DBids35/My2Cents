@@ -99,7 +99,7 @@ export default class ActivePoll extends Component {
         </div>
         <h3>{this.state.voteMessage} </h3>
         <h3>{this.state.numberVoted} out of {this.state.numberUsers} have voted on this poll </h3>
-        <PollCountdown endTime={this.props.endTime} id={this.state.id}/>
+        <PollCountdown endTime={this.props.endTime} id={this.state.id} updatePolls={this.props.updatePolls}/>
         
       </div>
       )

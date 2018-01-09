@@ -27,7 +27,7 @@ class App extends Component{
           <Route exact path='/' render={() => <Login onLogin={this.handleLogin} loggedIn={this.state.loggedIn}/>} />
           <PrivateRoute loggedIn={this.state.loggedIn} path='/home' component={()=> <Home user={this.state.user}/>} />
           <Route path='/results' render={()=> <Results user={this.state.user}/>} />
-          <Route path='/create' render={()=> <Create user={this.state.user}/>} />
+          <PrivateRoute loggedIn={this.state.loggedIn} path='/create' component={()=> <Create user={this.state.user}/>} />
         </Switch>
       </Router>
       )

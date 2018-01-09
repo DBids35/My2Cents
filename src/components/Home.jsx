@@ -42,22 +42,6 @@ export default class Home extends Component {
     });
   }
 
-  handleNewPollClick = (buyOrSell, ticker, explanation) => {
-    const now = new Date();
-    const endTime = now.setDate(now.getDate() + 3);
-    
-    fetch('http://my2cents.pythonanywhere.com/createPoll', {
-        method: 'POST',
-        headers: {Accept: 'application/json','Content-Type': 'application/json'},
-        body: JSON.stringify({action: buyOrSell, asset:ticker, explanation: explanation, endTime:endTime })
-      }
-    )
-    .then(result => result.json())
-    .then(result => {
-      console.log(result.polls);
-      this.setState({polls:result.polls});
-    })
-  }
   goToCreate = () => {
     window.location= '/create'
   }
@@ -78,6 +62,7 @@ export default class Home extends Component {
               body={poll.text}
               endTime={poll.endTime}
               onClick={this.handlePollVoteClick}
+              updatePolls={this.getPolls}
             />
           ))}
         </div>

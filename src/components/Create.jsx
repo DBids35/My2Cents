@@ -14,9 +14,9 @@ export default class Create extends Component {
 
   handleNewPollClick = (buyOrSell, ticker, explanation) => {
     const now = new Date();
-    const endTime = now.setDate(now.getDate() + 3);
+    const endTime = now.setDate(now.getDate() + .001);
     
-    fetch('http://my2cents.pythonanywhere.com/createPoll', {
+    fetch('http://my2cents.pythonanywhere.com/getStockPrice/'+ticker, {
         method: 'POST',
         headers: {Accept: 'application/json','Content-Type': 'application/json'},
         body: JSON.stringify({action: buyOrSell, asset:ticker, explanation: explanation, endTime:endTime })
@@ -24,12 +24,26 @@ export default class Create extends Component {
     )
     .then(result => result.json())
     .then(result => {
-      console.log(result.polls);
-      this.setState({polls:result.polls});
-      window.location= '/home'
-    })
+      if(result.msg == 'valid'){
+        fetch('http://my2cents.pythonanywhere.com/createPoll', {
+        method: 'POST',
+        headers: {Accept: 'application/json','Content-Type': 'application/json'},
+        body: JSON.stringify({action: buyOrSell, asset:ticker, explanation: explanation, endTime:endTime })
+        }
+        )
+        .then(result => result.json())
+        .then(result => {
+          console.log(result.polls);
+          this.setState({polls:result.polls});
+          window.location= '/home'
+        })
+      }
+      else{
+        alert("Invalid ticker")
+      }
 
-  }
+      })
+    }
 
   
 
